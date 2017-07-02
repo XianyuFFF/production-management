@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var htmlWebpackPlugin = require('html-webpack-plugin');
 
+// 设置 热更新配置
 var publicPath = 'http://localhost:3000/';
 var hotMiddlewareScript = 'webpack-hot-middleware/client?reload=true';
 
@@ -24,22 +25,14 @@ module.exports = {
           }
         }
       },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
+      }
     ]
   },
   plugins: [
-    new htmlWebpackPlugin({
-      filename: "index.html",
-      template: "index.html",
-      title: "PM",
-      // inject: false,
-    }),
-    // new webpack.DefinePlugin({
-    //   'process.env.NODE_ENV': '"development"'
-    // }),
-    // new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    // new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    // new webpack.NoErrorsPlugin(),
   ]
 };

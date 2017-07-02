@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
-
+var consolidate = require('consolidate');
+var index = require('./server/routes/index');
+// 
 var webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
     webpackHotMiddleware = require('webpack-hot-middleware'),
@@ -19,18 +21,12 @@ app.use(webpackDevMiddleware(compiler, {
   }
 }));
 app.use(webpackHotMiddleware(compiler));
+// 设置模板文件目录
+app.engine('html', consolidate.ejs);
+app.set('views', './client/dist');
+app.set('view engine', 'html');
 
-
-app.get('/', function (req, res) {
-  res.send('Hello World!?!');
-});
-
-app.get('/index', function (req, res) {
-  res.send('Hello Worldindex');
-});
-app.get('/admin', function (req, res) {
-  res.send('Hello adminnnn');
-});
+app.use('/', index);
 
 // var server = app.listen(3000, function () {
 //   var host = server.address().address;
