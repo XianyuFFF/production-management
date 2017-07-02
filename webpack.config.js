@@ -18,23 +18,11 @@ module.exports = {
       { 
         test: /\.js$/, 
         exclude: /node_modules/, 
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              presets: ['env']
-            }
-          },
-          'jsx-loader',
-        ]
+        loader: 'babel-loader'
       },
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015','react']
-        }
+        test: /\.(png|jpg)$/,
+        loader: 'url?limit=8192&context=public&name=[path][name].[ext]'
       },
       {
         test: /\.css$/,
