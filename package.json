@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "cross-env NODE_ENV=dev supervisor -i client app",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "webpack --config webpack.config.js --progress --display-modules --colors --display-reasons"
   },
@@ -17,8 +17,10 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.0.1",
     "html-webpack-plugin": "^2.29.0",
     "react-hot-loader": "^1.3.1",
+    "reload": "^1.1.7",
     "webpack": "^3.0.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-dev-server": "^2.5.0",
