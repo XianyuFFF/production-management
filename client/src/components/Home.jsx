@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom';
 class Home extends React.Component {
   render() {
     return (
-      <div>This is Home Component!</div>
+      <div>
+          <h1>This is a big home page!!!</h1>
+      </div>
     );
   }
 }

@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 
 class Sale extends React.Component {
   render() {
+    
     // var keywords = this.props.params.id;
     return (
-      <div>This is Sale Component!
-          {/*id: {keywords}*/}
+      <div>
+          <h1>Welcome Salesman "{this.props.match.params.id}"</h1>
       </div>
     );
   }

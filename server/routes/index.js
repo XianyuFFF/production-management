@@ -12,7 +12,7 @@ router.get('/index', function(req, res) {
   res.render('index');
 });
 // 定义 about 页面的路由
-router.get('/about', function(req, res) {
+router.get('/sale/:id', function(req, res) {
   res.render('index');
 });
 
