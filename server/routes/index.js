@@ -5,8 +5,8 @@ var router = express.Router();
 
 // 定义网站主页的路由
 router.get('/', function(req, res) {
-  console.log('this is route index.js  /')
-  res.redirect('/index');
+  // res.redirect('/index');
+  res.render('index');  
 });
 router.get('/index', function(req, res) {
   res.render('index');

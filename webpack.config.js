@@ -21,6 +21,11 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
+        test: /\.jsx$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      },
+      {
         test: /\.(png|jpg)$/,
         loader: 'url?limit=8192&context=public&name=[path][name].[ext]'
       },
@@ -29,6 +34,9 @@ module.exports = {
         loader: 'style-loader!css-loader'
       }
     ]
+  },
+  resolve: {
+    extensions: ['.js', '.jsx']
   },
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
