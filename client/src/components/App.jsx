@@ -40,9 +40,15 @@ const signin = (
 );
 
 class App extends React.Component {
+  constructor() {
+    super();
+  }
+  saleClick () {
+    console.log('sale is clicked');
+    this.props.history.push('/sale/chuzhu');
+  }
   render() {
     return (
-      <Router>
       <Layout>
         <Header style={{ position: 'fixed', width: '100%', height: '46px' }}>
             <div className="logo" />
@@ -53,11 +59,10 @@ class App extends React.Component {
             style={{ lineHeight: '46px' }}
             >
             <Menu.Item key="1">
-                <Link to="/index">Home</Link>
+                Home
             </Menu.Item>
-            <Menu.Item key="2">
-                {/*<Icon type="mail" />Guide<Link to="/sale/chuzhu">Salesman</Link>*/}
-                <Link to="/sale/chuzhu"><Icon type="mail" />Salesman</Link>
+            <Menu.Item key="2" >
+                <span onClick={this.saleClick} ><Icon type="mail" />Guide</span>
             </Menu.Item>
             <Menu.Item key="3">Introduce</Menu.Item>
             <Menu.Item style={{ float:'right' }}>
@@ -72,18 +77,19 @@ class App extends React.Component {
         </Header>
 
         <Content style={{ padding: '0 50px', marginTop: 46 }}>
-            
+            <Router>
+                <div>
                   <Route exact path="/" component={Home}/>
                   <Route path="/index" component={Home}/>
                   <Route path="/sale/:id" component={Sale}/>
-            
+                </div>
+            </Router>
         </Content>
 
         <Footer style={{ textAlign: 'center' }}>
             Ant Design ©2016 Created by Ant UED
         </Footer>
       </Layout>
-      </Router>
     );
   }
 }
