@@ -8,3 +8,10 @@
   margin: 7px 24px 7px 0;
   float: left;
 }
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+  background-color: inherit;
+}
+.ant-dropdown-menu-dark .ant-dropdown-menu-item-selected {
+  background: inherit;
+  color: rgba(255, 255, 255, 0.67);
+}
