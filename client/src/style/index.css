@@ -15,3 +15,17 @@
   background: inherit;
   color: rgba(255, 255, 255, 0.67);
 }
+.ant-dropdown-menu-dark .ant-dropdown-menu-item-selected:hover {
+  background: inherit;
+  color: #fff;
+}
+.login-form {
+  max-width: 300px;
+  margin: 24px auto 0px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
