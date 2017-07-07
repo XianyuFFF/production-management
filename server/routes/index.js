@@ -11,6 +11,24 @@ router.get('/', function(req, res) {
 router.get('/index', function(req, res) {
   res.render('index');
 });
+router.get('/login', function(req, res) {
+  res.render('index');
+});
+router.post('/user/login', function(req, res) {
+  console.log(req.body);
+  res.send({result: {
+    status: 'fail'
+  }});
+});
+router.get('/register', function(req, res) {
+  res.render('index');
+});
+router.post('/user/register', function(req, res) {
+  console.log(req.body);
+  res.send({result: {
+    status: 'fail'
+  }});
+});
 // 定义 about 页面的路由
 router.get('/sale/:id', function(req, res) {
   res.render('index');

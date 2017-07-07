@@ -1,5 +1,7 @@
 @import '~antd/dist/antd.css';
-
+body {
+  background-color: #eee;
+}
 #components-layout-demo-fixed .logo {
   width: 120px;
   height: 32px;
@@ -21,7 +23,7 @@
 }
 .login-form {
   max-width: 300px;
-  margin: 24px auto 0px;
+  margin: 50px auto 10px;
 }
 .login-form-forgot {
   float: right;
