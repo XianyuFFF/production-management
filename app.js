@@ -1,8 +1,10 @@
 var express = require('express');
+var session = require('express-session');
 var app = express();
 var consolidate = require('consolidate');
 var bodyParser = require('body-parser');
 var index = require('./server/routes/index');
+
 // 
 var webpack = require('webpack'),
     webpackDevMiddleware = require('webpack-dev-middleware'),
@@ -28,6 +30,12 @@ app.set('views', './client/dist');
 app.set('view engine', 'html');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {secure: false}
+}));
 app.use('/', index);
 
 // var server = app.listen(3000, function () {

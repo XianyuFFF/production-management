@@ -14,6 +14,8 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Sale from './Sale';
+import ProductAdmin from './ProductAdmin';
+
 import Nav from './Nav';
 
 class App extends React.Component {
@@ -27,7 +29,7 @@ class App extends React.Component {
             <Route path="/index" component={Home}/>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
-            <Route path="/sale/:id" component={Sale}/>
+            <Route path="/productadmin/:id" component={ProductAdmin}/>
           </Content>
           <hr />
           <Footer style={{ textAlign: 'center' }}>

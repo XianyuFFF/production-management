@@ -1,4 +1,11 @@
 import React from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom'
 import { Form, Icon, Input, Button, Checkbox, Radio, Row, Col, message } from 'antd';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -15,7 +22,7 @@ class NormalLoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        fetch('/user/login', {
+        fetch('/login', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -29,7 +36,12 @@ class NormalLoginForm extends React.Component {
         }).then( json => {
           console.log(json);
           let result = json.result;
-          if (result.status === 'fail') {
+          if (result.status === 'success') {
+            message.success('Login successfully, ' + result.name)
+            withRouter( ({history}) => {
+              history.push('productadmin/100000')
+            })
+          } else {
             message.error('Wrong Employee Id or Password, please input again!')
           }
           console.log('json.result: ' + result);
