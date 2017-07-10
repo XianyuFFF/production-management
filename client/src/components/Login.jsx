@@ -29,22 +29,23 @@ class NormalLoginForm extends React.Component {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(values)
-          // body: values
         }).then( response => {
-          console.log(response)
+          // console.log(response)
           return response.json()
         }).then( json => {
           console.log(json);
           let result = json.result;
-          if (result.status === 'success') {
-            message.success('Login successfully, ' + result.name)
-            this.props.history.push('/productadmin/100000');
-          } else {
-            message.error('Wrong Employee Id or Password, please input again!')
+          if ( result.status === 1 ) {
+            message.success(result.message)
+            this.props.history.push('/user/productadmin/100000');
+          } else if ( result.status === 2 ) {
+            message.warning(result.message)
+          } else if ( result.status === 0 ) {
+            message.error(result.message)
           }
-          console.log('json.result: ' + result);
+          console.log('json.result: ');
+          console.log(result);
         })
-        console.log(JSON.stringify(values))
         console.log('Received values of form: ', values);
       }
     });

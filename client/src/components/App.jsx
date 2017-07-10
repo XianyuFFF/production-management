@@ -29,7 +29,7 @@ class App extends React.Component {
             <Route path="/index" component={Home}/>
             <Route path="/login" component={Login}/>
             <Route path="/register" component={Register}/>
-            <Route path="/productadmin/:id" component={ProductAdmin}/>
+            <Route path="/user/productadmin/:id" component={ProductAdmin}/>
           </Content>
           <hr />
           <Footer style={{ textAlign: 'center' }}>

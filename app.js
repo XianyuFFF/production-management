@@ -1,5 +1,6 @@
 var express = require('express');
 var session = require('express-session');
+var cookieParser = require('cookie-parser');
 var app = express();
 var consolidate = require('consolidate');
 var bodyParser = require('body-parser');
@@ -30,11 +31,14 @@ app.set('views', './client/dist');
 app.set('view engine', 'html');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(cookieParser());
 app.use(session({
     secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {secure: false}
+    resave:true,
+    saveUninitialized:false,
+    cookie:{
+        maxAge:1000*60*20 //过期时间设置(单位毫秒)
+    }
 }));
 app.use('/', index);
 

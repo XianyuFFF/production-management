@@ -31,10 +31,17 @@ class RegistrationForm extends React.Component {
         }).then( json => {
           console.log(json);
           let result = json.result;
-          if (result.status === 'fail') {
-            message.error('Wrong Employee Id or Password, please input again!')
+          if ( result.status === 1 ) {
+            message.success(result.message)
+            this.props.history.push('/login');
+          } else if ( result.status === 2 ) {
+            message.warning(result.message)
+            this.props.history.push('/login');
+          } else if ( result.status === 0 ) {
+            message.error(result.message)
           }
-          console.log('json.result: ' + result);
+          console.log('json.result: ');
+          console.log(result);
         })
         console.log('Received values of form: ', values);
       }
@@ -128,6 +135,23 @@ class RegistrationForm extends React.Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
+          label="Role"
+        >
+            {getFieldDecorator('role', {
+                rules: [{ required: true, message: 'Please select your Role!' }],
+            })(
+                <RadioGroup>
+                  <Row>
+                    <Col xs={12}><Radio value={'ProductAdmin'}>ProductAdmin</Radio></Col>
+                    <Col xs={12}><Radio value={'SalesMan'}>SalesMan</Radio></Col>
+                    <Col xs={12}><Radio value={'WarehouseMan'}>WarehouseMan</Radio></Col>
+                    <Col xs={12}><Radio value={'Worker'}>Worker</Radio></Col>
+                  </Row>
+                </RadioGroup>
+            )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
           label="Old Password"
         >
           {getFieldDecorator('old', {
@@ -194,8 +218,8 @@ class RegistrationForm extends React.Component {
           })(
               <RadioGroup>
                 <Row>
-                  <Col xs={12}><Radio value={0}>Male</Radio></Col>
-                  <Col xs={12}><Radio value={1}>Female</Radio></Col>
+                  <Col xs={12}><Radio value={1}>Male</Radio></Col>
+                  <Col xs={12}><Radio value={0}>Female</Radio></Col>
                 </Row>
               </RadioGroup>
           )}
@@ -233,6 +257,38 @@ class RegistrationForm extends React.Component {
             </AutoComplete>
           )}
         </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Security Question"
+        >
+          {getFieldDecorator('question1', {
+            rules: [
+                { required: true, message: 'Please select your security question!' }
+            ],
+          })(
+            <Select>
+              <Option value="What's your daddy's name?">What's your daddy's name?</Option>
+              <Option value="Who is your favourite people?">Who is your favourite people?</Option>
+              <Option value="Which song do you like best?">Which song do you like best?</Option>
+            </Select>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Answer"
+        >
+          {getFieldDecorator('answer1', {
+            rules: [
+                { required: true, message: 'Please input your security answer!' },
+                {
+                  max: 32, message: 'This answer is too long!!'
+                }
+            ],
+          })(
+            <Input placeholder="Security answer" />
+          )}
+        </FormItem>
+
         <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
           {getFieldDecorator('agreement', {
             valuePropName: 'checked',

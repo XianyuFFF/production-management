@@ -10,8 +10,11 @@ var connection = mysql.createConnection({
 })
 connection.connect();
 // test connect route
+
 router.get('/connect', function(req, res) {
-  connection.query('select * from user', function (error, results, fields) {
+  var selectSQL = 'select * from ProductAdmin where id=?';
+  var selectParam = [100000];
+  connection.query(selectSQL, selectParam, function (error, results, fields) {
     if (error) throw error;
     res.send(results);
   })
@@ -22,7 +25,17 @@ router.get('/insert', function(req, res) {
     res.send(results);
   })
 })
-
+// 登录过滤
+router.get('/user/*', function(req, res, next) {
+  console.log('this is get login filter user*')
+  console.log(req.session);
+  console.log(req.session.user);
+  if (!req.session.user) {
+    res.redirect('/index');
+  } else if (req.session.user) {
+    next();
+  }
+});
 router.post('/user/*', function(req, res, next) {
   console.log('this is post login filter')
   // res.send('index1');
@@ -39,47 +52,110 @@ router.get('/index', function(req, res) {
 router.get('/login', function(req, res) {
   res.render('index');
 });
-
+// 登录处理接口
 router.post('/login', function(req, res) {
   var data = req.body;
   console.log(data);
-  let result = { id: '100000',
-                password: '123456',
-                role: 'ProductAdmin',
-                name: 'MrSosann',
-                remember: true }
-  if (data.id == result.id && data.password == result.password) {
-    var user = {id: data.id}
-    req.session.user = user;
-    res.send({result: {
-      status: 'success',
-      name: result.name
-    }});
-  } else {
-    res.send({result: {
-      status: 'fail'
-    }});
-  }
+  var selectSQL = `select * from ${data.role} where id=?`;
+  var selectParam = [];
+  // selectParam.push(data.role);
+  selectParam.push(data.id);
+  
+  connection.query(selectSQL, selectParam, function (error, results, fields) {
+    if (error) throw error;
+    console.log(results);
+    if (results[0].password == data.password) {
+      if (results[0].name) {
+        // 登录成功
+        var user = {
+          id: data.id,
+          role: data.role,
+        }
+        req.session.user = user;
+        res.send({result: {
+          status: 1,
+          message: 'Login successfully, ' + results[0].name,
+        }});
+      } else {
+        // 账号未激活
+        res.send({result: {
+          status: 2,
+          message: 'User is not active, please signin up first!'
+        }});
+      }
+    } else {
+      // 账号或密码错误
+      res.send({result: {
+        status: 0,
+        message: 'Wrong Employee Id or Password, please input again!'
+      }});
+    }
+  })
+  // if (data.id == result.id && data.password == result.password) {
+  //   var user = {id: data.id}
+  //   req.session.user = user;
+  //   res.send({result: {
+  //     status: 'success',
+  //     name: result.name
+  //   }});
+  // } else {
+  //   res.send({result: {
+  //     status: 'fail'
+  //   }});
+  // }
 });
 router.get('/register', function(req, res) {
   res.render('index');
 });
+// 注册处理接口
 router.post('/register', function(req, res) {
-  console.log(req.body);
-  res.send({result: {
-    status: 'fail'
-  }});
+  var data = req.body;
+  console.log(data);
+  var selectSQL = `select * from ${data.role} where id=?`;
+  var updateSQL = `update ${data.role} set password=?, name=?, gender=?, tel=?, email=?, question1=?, answer1=? where id=?`;
+  var selectParam = [];
+  var updateParam = [ data.password, data.name, data.gender, 
+                      data.tel, data.email, data.question1, 
+                      data.answer1, data.id];
+  selectParam.push(data.id);
+  
+  connection.query(selectSQL, selectParam, function (error, results, fields) {
+    if (error) throw error;
+    console.log(results);
+    if (results[0].password == data.old) {
+      if (results[0].name) {
+        // 已注册
+        res.send({result: {
+          status: 2,
+          message: 'User has been active, please Sign in straightly!',
+        }});
+      } else {
+        // 账号未激活 更新信息
+        connection.query(updateSQL, updateParam, function (error, results, fields) {
+          if (error) throw error;
+          res.send({result: {
+            status: 1,
+            message: 'Activity successfully!'
+          }});
+        })
+      }
+    } else {
+      // 账号或密码错误
+      res.send({result: {
+        status: 0,
+        message: 'Wrong Employee Id or Password, please input right!'
+      }});
+    }
+  })
 });
 
 // role user page
-router.get('/productadmin/:id', function(req, res) {
+router.get('/user/logout',function(req,res) {  
+    req.session.user = null;  
+    res.redirect('/index');
+});  
+router.get('/user/productadmin/:id', function(req, res) {
   res.render('index');
-});
-
-router.get('*', function(req, res, next) {
-  console.log('this is get login filter')
-  // res.send('index1');
-  next();
 });
 
 router.get('/test', function(req, res, next) {
