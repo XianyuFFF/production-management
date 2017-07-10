@@ -26,7 +26,7 @@ class Nav extends React.Component {
                     <Link to="/index">Home</Link>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <Icon type="mail" />Guide
+                    <Link to="/productadmin/123456"><Icon type="mail" />Guide</Link>
                 </Menu.Item>
                 <Menu.Item key="3">Introduce</Menu.Item>
                 <Menu.Item key="4" style={{float: 'right'}}>

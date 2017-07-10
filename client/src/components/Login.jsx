@@ -38,9 +38,7 @@ class NormalLoginForm extends React.Component {
           let result = json.result;
           if (result.status === 'success') {
             message.success('Login successfully, ' + result.name)
-            withRouter( ({history}) => {
-              history.push('productadmin/100000')
-            })
+            this.props.history.push('/productadmin/100000');
           } else {
             message.error('Wrong Employee Id or Password, please input again!')
           }
