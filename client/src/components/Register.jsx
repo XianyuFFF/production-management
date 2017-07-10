@@ -1,7 +1,8 @@
 import React from 'react';
-import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, message } from 'antd';
+import { Radio ,Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete, message } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
+const RadioGroup = Radio.Group;
 const AutoCompleteOption = AutoComplete.Option;
 message.config({
   top: 68,
@@ -16,7 +17,7 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        fetch('/user/register', {
+        fetch('/register', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -95,6 +96,14 @@ class RegistrationForm extends React.Component {
         },
       },
     };
+    const prefixSelector = getFieldDecorator('prefix', {
+      initialValue: '86',
+    })(
+      <Select style={{ width: 60 }}>
+        <Option value="86">+86</Option>
+        <Option value="87">+87</Option>
+      </Select>
+    );
 
     const websiteOptions = autoCompleteResult.map(website => (
       <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
@@ -162,6 +171,46 @@ class RegistrationForm extends React.Component {
             }],
           })(
             <Input type="password" placeholder="Password again" onBlur={this.handleConfirmBlur} />
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Name"
+        >
+          {getFieldDecorator('name', {
+            rules: [
+              { required: true, message: 'Please input your name!' },
+            ],
+          })(
+            <Input placeholder="Name" />
+          )}
+        </FormItem>
+        <FormItem
+        {...formItemLayout}
+          label="Gender"
+        >
+          {getFieldDecorator('gender', {
+              rules: [{ required: true, message: 'Please select your gender!' }],
+          })(
+              <RadioGroup>
+                <Row>
+                  <Col xs={12}><Radio value={0}>Male</Radio></Col>
+                  <Col xs={12}><Radio value={1}>Female</Radio></Col>
+                </Row>
+              </RadioGroup>
+          )}
+        </FormItem>
+        <FormItem
+          {...formItemLayout}
+          label="Phone Number"
+        >
+          {getFieldDecorator('tel', {
+            rules: [{ required: true, message: 'Please input your phone number!' },
+                    {
+                      len: 11, message: 'Phone number length is 11'
+                    }],
+          })(
+            <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
           )}
         </FormItem>
         <FormItem
