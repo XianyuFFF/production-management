@@ -31,15 +31,22 @@ app.set('views', './client/dist');
 app.set('view engine', 'html');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.use(cookieParser());
+app.use(cookieParser('keyboard cat'));
 app.use(session({
-    secret: 'keyboard cat',
-    resave:true,
-    saveUninitialized:false,
-    cookie:{
-        maxAge:1000*60*20 //过期时间设置(单位毫秒)
+    resave: true ,
+    secret: '123456' , 
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000*60*10,
     }
 }));
+// app.use('/', function(req, res, next){
+//     console.log('app middleware: ', req.session)
+//     if(req.session.user){
+//       req._user = req.session.user;
+//     }
+//     next();
+// });
 app.use('/', index);
 
 // var server = app.listen(3000, function () {

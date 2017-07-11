@@ -28,13 +28,14 @@ router.get('/insert', function(req, res) {
 // 登录过滤
 router.get('/user/*', function(req, res, next) {
   console.log('this is get login filter user*')
-  console.log(req.session);
+  console.log("user filter: ", req.session);
   console.log(req.session.user);
-  if (!req.session.user) {
-    res.redirect('/index');
-  } else if (req.session.user) {
-    next();
-  }
+  // if (!req.session.user) {
+  //   res.redirect('/index');
+  // } else if (req.session.user) {
+  //   next();
+  // }
+  next();
 });
 router.post('/user/*', function(req, res, next) {
   console.log('this is post login filter')
@@ -64,45 +65,47 @@ router.post('/login', function(req, res) {
   connection.query(selectSQL, selectParam, function (error, results, fields) {
     if (error) throw error;
     console.log(results);
-    if (results[0].password == data.password) {
-      if (results[0].name) {
-        // 登录成功
-        var user = {
-          id: data.id,
-          role: data.role,
+    if (results[0]) {
+      if (results[0].password == data.password) {
+        if (results[0].name) {
+          // 登录成功
+          var user = {
+            id: data.id,
+            role: data.role,
+          }
+          req.session.user = 'isLogin';
+          req.session.status = 'logined';
+          req.session.cookie.status = 'logined';
+          console.log("login: ",req.session);
+          res.send({result: {
+            status: 1,
+            message: 'Login successfully, ' + results[0].name,
+            id: results[0].id,
+            name: results[0].name,
+            role: data.role,
+          }});
+        } else {
+          // 账号未激活
+          res.send({result: {
+            status: 2,
+            message: 'User is not active, please signin up first!',
+          }});
         }
-        req.session.user = user;
-        res.send({result: {
-          status: 1,
-          message: 'Login successfully, ' + results[0].name,
-        }});
       } else {
-        // 账号未激活
+        // 账号或密码错误
         res.send({result: {
-          status: 2,
-          message: 'User is not active, please signin up first!'
+          status: 0,
+          message: 'Wrong Employee Id or Password, please input again!'
         }});
       }
     } else {
-      // 账号或密码错误
+      // 账号不存在
       res.send({result: {
         status: 0,
-        message: 'Wrong Employee Id or Password, please input again!'
+        message: 'Employee Id is undefined, please input again!'
       }});
     }
   })
-  // if (data.id == result.id && data.password == result.password) {
-  //   var user = {id: data.id}
-  //   req.session.user = user;
-  //   res.send({result: {
-  //     status: 'success',
-  //     name: result.name
-  //   }});
-  // } else {
-  //   res.send({result: {
-  //     status: 'fail'
-  //   }});
-  // }
 });
 router.get('/register', function(req, res) {
   res.render('index');
@@ -122,28 +125,36 @@ router.post('/register', function(req, res) {
   connection.query(selectSQL, selectParam, function (error, results, fields) {
     if (error) throw error;
     console.log(results);
-    if (results[0].password == data.old) {
-      if (results[0].name) {
-        // 已注册
-        res.send({result: {
-          status: 2,
-          message: 'User has been active, please Sign in straightly!',
-        }});
-      } else {
-        // 账号未激活 更新信息
-        connection.query(updateSQL, updateParam, function (error, results, fields) {
-          if (error) throw error;
+    if ( results[0] ) {
+      if (results[0].password == data.old) {
+        if (results[0].name) {
+          // 已注册
           res.send({result: {
-            status: 1,
-            message: 'Activity successfully!'
+            status: 2,
+            message: 'User has been active, please Sign in straightly!',
           }});
-        })
+        } else {
+          // 账号未激活 更新信息
+          connection.query(updateSQL, updateParam, function (error, results, fields) {
+            if (error) throw error;
+            res.send({result: {
+              status: 1,
+              message: 'Activity successfully!'
+            }});
+          })
+        }
+      } else {
+        // 账号或密码错误
+        res.send({result: {
+          status: 0,
+          message: 'Wrong Employee Id or Password, please input right!'
+        }});
       }
     } else {
-      // 账号或密码错误
+      // 账号不存在
       res.send({result: {
         status: 0,
-        message: 'Wrong Employee Id or Password, please input right!'
+        message: 'Employee Id is undefined, please input right!'
       }});
     }
   })

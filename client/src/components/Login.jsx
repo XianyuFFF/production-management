@@ -37,7 +37,13 @@ class NormalLoginForm extends React.Component {
           let result = json.result;
           if ( result.status === 1 ) {
             message.success(result.message)
-            this.props.history.push('/user/productadmin/100000');
+            alert(result.message);
+            this.props.history.push(`/user/productadmin/${result.id}`);
+            // window.location.href = '/user/productadmin/100000'
+            // withRouter( ({history}) => {
+            //   console.log('this withrouter')
+            //   history.push('/user/productadmin/100000')
+            // })
           } else if ( result.status === 2 ) {
             message.warning(result.message)
           } else if ( result.status === 0 ) {

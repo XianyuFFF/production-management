@@ -31,8 +31,13 @@ class App extends React.Component {
             <Route path="/register" component={Register}/>
             <Route path="/user/productadmin/:id" component={ProductAdmin}/>
           </Content>
-          <hr />
-          <Footer style={{ textAlign: 'center' }}>
+          <Footer style={{ textAlign: 'center',
+                           position: 'fixed',
+                           bottom: '5px',
+                           width: '100%',
+                           zIndex: 2,
+                           backgroundColor: '#eee',
+                           }}>
             Copy ©2017 Created by MrSosann &nbsp;&nbsp;
             <Icon type="github" />
             <a href="https://github.com/Mrsosann/production-management" title="Click to Github address">&nbsp;Github</a>

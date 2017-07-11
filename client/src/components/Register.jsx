@@ -24,7 +24,6 @@ class RegistrationForm extends React.Component {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(values)
-          // body: values
         }).then( response => {
           console.log(response)
           return response.json()
