@@ -19,17 +19,24 @@ import ProductAdmin from './ProductAdmin';
 import Nav from './Nav';
 
 class App extends React.Component {
+  state = {
+    isLogin: '',
+  }
+  login = (isLogin) => {
+    alert(isLogin)
+  }
   render() {
     return (
       <Router>
         <Layout>
-          <Nav />
+          <Nav isLogin={this.state.isLogin}/>
           <Content style={{ padding: '0 50px', marginTop: 64 }}>
             <Route exact path="/" component={Home}/>
             <Route path="/index" component={Home}/>
-            <Route path="/login" component={Login}/>
+            <Route path="/login" component={Login} login={this.login}/>
             <Route path="/register" component={Register}/>
-            <Route path="/user/productadmin/:id" component={ProductAdmin}/>
+            <Route path="/user/productadmin/index/:id" component={ProductAdmin}/>
+            <div style={{height: 66, width: '100%'}}></div>
           </Content>
           <Footer style={{ textAlign: 'center',
                            position: 'fixed',

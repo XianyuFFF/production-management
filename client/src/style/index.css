@@ -1,6 +1,6 @@
 @import '~antd/dist/antd.css';
 body {
-  background-color: #eee;
+   background-color: #eee; 
 }
 #components-layout-demo-fixed .logo {
   width: 120px;
@@ -30,4 +30,32 @@ body {
 }
 .login-form-button {
   width: 100%;
+}
+.ant-tabs-nav .ant-tabs-tab {
+  height: auto;
+}
+.steps-content {
+  margin-top: 16px;
+  border: 1px dashed #e9e9e9;
+  border-radius: 6px;
+  background-color: #fafafa;
+  min-height: 200px;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.steps-action {
+  margin-top: 24px;
+}
+/* ProductAdmin/Produce/Current product not enough */
+
+td.column-notEnough,
+td.column-notEnough:hover {
+  background-color: #F1684E!important;
+  /* FF8C94 */
+  color: #eee;
+  font-weight: 500;
+}
+.ant-card-body {
+  padding: 0;
 }

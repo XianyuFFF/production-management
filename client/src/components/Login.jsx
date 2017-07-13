@@ -16,17 +16,14 @@ message.config({
 
 class NormalLoginForm extends React.Component {
   handleSubmit = (e) => {
-    const error = () => {
-      message.error('This is a message of error');
-    };
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         fetch('/login', {
+          credentials: 'include',
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify(values)
         }).then( response => {
@@ -37,12 +34,12 @@ class NormalLoginForm extends React.Component {
           let result = json.result;
           if ( result.status === 1 ) {
             message.success(result.message)
-            alert(result.message);
-            this.props.history.push(`/user/productadmin/${result.id}`);
-            // window.location.href = '/user/productadmin/100000'
+            // alert(result.message);
+            this.props.history.push(`/user/productadmin/index/${result.id}`);
+            // window.location.href = '/user/productadmin/index/100000'
             // withRouter( ({history}) => {
             //   console.log('this withrouter')
-            //   history.push('/user/productadmin/100000')
+            //   history.push('/user/productadmin/index/100000')
             // })
           } else if ( result.status === 2 ) {
             message.warning(result.message)
@@ -110,7 +107,7 @@ class NormalLoginForm extends React.Component {
           <Button type="primary" htmlType="submit" className="login-form-button">
             Log in
           </Button>
-          Or <a href="">register now!</a>
+          Or <a href="/register">register now!</a>
         </FormItem>
       </Form>
     );

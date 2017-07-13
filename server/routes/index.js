@@ -27,15 +27,13 @@ router.get('/insert', function(req, res) {
 })
 // 登录过滤
 router.get('/user/*', function(req, res, next) {
-  console.log('this is get login filter user*')
-  console.log("user filter: ", req.session);
   console.log(req.session.user);
-  // if (!req.session.user) {
-  //   res.redirect('/index');
-  // } else if (req.session.user) {
-  //   next();
-  // }
-  next();
+  if (!req.session.user) {
+    next();
+    // res.redirect('/index');
+  } else if (req.session.user) {
+    next();
+  }
 });
 router.post('/user/*', function(req, res, next) {
   console.log('this is post login filter')
@@ -72,10 +70,9 @@ router.post('/login', function(req, res) {
           var user = {
             id: data.id,
             role: data.role,
+            name: results[0].name,
           }
-          req.session.user = 'isLogin';
-          req.session.status = 'logined';
-          req.session.cookie.status = 'logined';
+          req.session.user = user;
           console.log("login: ",req.session);
           res.send({result: {
             status: 1,
@@ -124,7 +121,6 @@ router.post('/register', function(req, res) {
   
   connection.query(selectSQL, selectParam, function (error, results, fields) {
     if (error) throw error;
-    console.log(results);
     if ( results[0] ) {
       if (results[0].password == data.old) {
         if (results[0].name) {
@@ -160,29 +156,95 @@ router.post('/register', function(req, res) {
   })
 });
 
-// role user page
+// role all user page
 router.get('/user/logout',function(req,res) {  
     req.session.user = null;  
+    // res.send({
+    //   result: {
+    //     status: 1,
+    //   }
+    // })
     res.redirect('/index');
-});  
-router.get('/user/productadmin/:id', function(req, res) {
+});
+// productadmin role 接口
+router.get('/user/productadmin/index/:id', function(req, res) {
   res.render('index');
 });
+router.get('/user/productadmin/currentData', function(req, res) {
+  var data = {};
+  var storeSQL = 'SELECT * FROM store order by id desc limit 1';
+  connection.query(storeSQL, function (error, results, fields) {
+    if (error) throw error;
+    var result = results[0];
+    data.storeData = [{
+        key: '1',
+        product_a: result.product_a,
+        product_b: result.product_b,
+        product_c: result.product_c,
+        product_d: result.product_d,
+      },];
+    var orderSQL = 'SELECT SUM(product_a) product_a, SUM(product_b) product_b, SUM(product_c) product_c, SUM(product_d) product_d FROM orders WHERE whether_complete = 0';
+    connection.query(orderSQL, function (oerror, oresults, ofields) {
+      if (oerror) throw oerror;
+      var oresult = oresults[0];
+      data.orderData = [{
+        key: '1',
+        product_a: oresult.product_a,
+        product_b: oresult.product_b,
+        product_c: oresult.product_c,
+        product_d: oresult.product_d,
+      },];
+      connection.query('SELECT id, name FROM worker', function(werror, wresults, wfields) {
+        if (werror) throw werror;
+        console.log(wresults);
+        data.workerData = wresults;
+        // res.send({data: results})
+        res.send({data});
+      })
+    })
+  })
+});
+router.post('/user/productadmin/product', function(req,res) {
+  var data = req.body;
+  var selectSQL = 'SELECT * FROM store order by id desc limit 1'
+  connection.query(selectSQL, function(error, results, fields) {
+    if (error) throw error;
+    var result = results[0];
+    var insertSQL = 'INSERT INTO store (producer_id, sign, change_a, change_b, change_c, change_d, product_a, product_b, product_c, product_d) VALUES (?,?,?,?,?,?,?,?,?,?)'
+    var insertParam = [ data.producer_id,
+                        1,
+                        parseInt(data.product_a),
+                        parseInt(data.product_b),
+                        parseInt(data.product_c),
+                        parseInt(data.product_d),
+                        parseInt(data.product_a)+result.product_a,
+                        parseInt(data.product_b)+result.product_b,
+                        parseInt(data.product_c)+result.product_c,
+                        parseInt(data.product_d)+result.product_d,
+                      ];
+    connection.query(insertSQL, insertParam, function(ierror, iresults, ifields) {
+      if (ierror) throw ierror;
+      res.send({result: {
+        message: `${data.product_a} of A,${data.product_b} of B,${data.product_c} of C,${data.product_d} of D has producted!`
+      }});
+    })
+  })
+  console.log(data);
+})
+router.get('/user/productadmin/workerData', function(req,res) {
+  var selectSQL = 'SELECT id, name FROM worker';
+  connection.query(selectSQL, function(error, results, fields) {
+    if (error) throw error;
+    console.log(results);
+    res.send({data: results})
+  })
+})
 
-router.get('/test', function(req, res, next) {
-  console.log('this is test index 1')
-  // res.send('index1');
-  next();
-});
-router.get('/test', function(req, res) {
-  console.log('this is test index 2')
-  res.send('index2');
-  res.end();
-});
 // 定义 sale 页面的路由
 router.get('/sale/:id', function(req, res) {
   res.render('index');
 });
+router.use('/static', express.static('/public'));
 
 module.exports = router;
 

@@ -6,12 +6,35 @@ import {
   Link
 } from 'react-router-dom';
 import { Menu, Icon, Layout, Dropdown, Modal } from 'antd';
+import { Popconfirm, message } from 'antd';
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 const { Header, Content, Footer } = Layout;
-import LoginForm from './LoginModal';
 
 class Nav extends React.Component {
+  state = {
+      isLogin: this.props.isLogin,
+  }
+  confirm(e) {
+    console.log(e);
+    message.success('Click on Yes');
+    fetch('/user/logout', {
+        credentials: 'include',
+    }).then( response => {
+        console.log(response)
+        //   return response.json()
+        window.location.href = '/index';
+    });
+    // this.props.history.push(`/index`);
+    return true;
+  }
+
+  cancel(e) {
+    console.log(e);
+    message.error('Click on No');
+    return false;
+  }
+
   render() {
     return (
         <Header style={{ position: 'fixed', width: '100%', fontSize: 14, zIndex: 2}}>
@@ -28,12 +51,24 @@ class Nav extends React.Component {
                 <Menu.Item key="2">
                     <Link to="/index"><Icon type="mail" />Guide</Link>
                 </Menu.Item>
-                <Menu.Item key="3">Introduce</Menu.Item>
+                <Menu.Item key="3">
+                    <Popconfirm title="Are you sure delete this task?" onConfirm={this.confirm} onCancel={this.cancel} okText="Yes" cancelText="No">
+                        <a href="/user/logout">logout</a>
+                    </Popconfirm>
+                </Menu.Item>
                 <Menu.Item key="4" style={{float: 'right'}}>
-                    <Link to="/login">Sign in</Link>
+                    {this.state.isLogin?(
+                        <a href="/logout">Sign out</a>
+                    ):(
+                        <Link to="/login">Sign in</Link>
+                    )}
                 </Menu.Item>
                 <Menu.Item key="5" style={{float: 'right'}}>
-                    <Link to="/register">Sign up</Link>
+                    {this.state.isLogin?(
+                        <a href="/user/index">{this.state.isLogin}</a>
+                    ):(
+                        <Link to="/register">Sign up</Link>
+                    )}
                 </Menu.Item>
             </Menu>
         </Header>
