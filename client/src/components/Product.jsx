@@ -47,10 +47,8 @@ class AdvancedSearchForm extends React.Component {
           },
           body: JSON.stringify(values)
         }).then( response => {
-          // console.log(response)
           return response.json()
         }).then( json => {
-          console.log(json);
           let result = json.result;
           this.setState({
             loading: true,
@@ -63,8 +61,8 @@ class AdvancedSearchForm extends React.Component {
             message.success(result.message);
           }, 2000);
           
-          console.log('json.result: ');
-          console.log(result);
+          // console.log('json.result: ');
+          // console.log(result);
           this.handleReset();
         })
         console.log('Received values of form: ', values);

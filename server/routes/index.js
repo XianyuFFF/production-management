@@ -239,6 +239,29 @@ router.get('/user/productadmin/workerData', function(req,res) {
     res.send({data: results})
   })
 })
+router.post('/user/productadmin/personnel', function(req, res) {
+  var data = req.body;
+  var selectSQL = `SELECT id, name, gender, tel, email from ${data.role}`;
+  connection.query(selectSQL, function(error, results, fields) {
+    if(error) throw error;
+    console.log(results);
+    res.send({
+      result: results,
+    });
+  })
+})
+router.post('/user/productadmin/adduser', function(req, res) {
+  var data = req.body;
+  var insertSQL = `INSERT INTO ${data.role} (password) VALUES (123456)`;
+  connection.query(insertSQL, function(error, results, fields) {
+    if(error) throw error;
+    console.log(results);
+    res.send({result:{
+      role: data.role,
+      id: results.insertId,
+    }})
+  })
+})
 
 // 定义 sale 页面的路由
 router.get('/sale/:id', function(req, res) {

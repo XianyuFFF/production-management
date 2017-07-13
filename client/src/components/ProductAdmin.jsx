@@ -25,8 +25,9 @@ class ProductAdmin extends React.Component {
       storeData: null,
       columns: null,
       workerData: null,
+      userData: null,
     }
-    this.handleFetchData();
+    this.handleFetchData(); 
   }
   componentWillMount() {
     const columns = [{
@@ -87,7 +88,9 @@ class ProductAdmin extends React.Component {
       itemkey,
       content,
     })
+    // console.log(this.state)
   }
+  
   handleFetchData() {
     const columns = [{
       title: 'Product A',
@@ -112,7 +115,7 @@ class ProductAdmin extends React.Component {
         // this.props.history.push(`/index`);
     }).then(json => {
         var data = json.data;
-        console.log('this is handle fetch data: ', data)
+        // console.log('this is handle fetch data: ', data)
         this.setState({
           orderData: data.orderData,
           storeData: data.storeData,
