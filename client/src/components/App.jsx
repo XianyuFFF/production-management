@@ -13,8 +13,10 @@ const { Header, Content, Footer } = Layout;
 import Home from './Home';
 import Login from './Login';
 import Register from './Register';
-import Sale from './Sale';
 import ProductAdmin from './ProductAdmin';
+import SalesMan from './SalesMan';
+import WarehouseMan from './WarehouseMan';
+import Worker from './Worker';
 
 import Nav from './Nav';
 
@@ -36,6 +38,9 @@ class App extends React.Component {
             <Route path="/login" component={Login} login={this.login}/>
             <Route path="/register" component={Register}/>
             <Route path="/user/productadmin/index/:id" component={ProductAdmin}/>
+            <Route path="/user/salesman/index/:id" component={SalesMan}/>
+            <Route path="/user/warehouseman/index/:id" component={WarehouseMan}/>
+            <Route path="/user/worker/index/:id" component={Worker}/>
             <div style={{height: 66, width: '100%'}}></div>
           </Content>
           <Footer style={{ textAlign: 'center',

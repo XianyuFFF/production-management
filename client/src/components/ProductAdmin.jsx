@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Layout, Menu, Breadcrumb, Button } from 'antd';
-import { Tabs, Icon, message } from 'antd';
+import { Icon, message } from 'antd';
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
-const TabPane = Tabs.TabPane;
 message.config({
   top: 74,
   duration: 3,
@@ -88,7 +87,6 @@ class ProductAdmin extends React.Component {
       itemkey,
       content,
     })
-    // console.log(this.state)
   }
   
   handleFetchData() {
@@ -109,13 +107,11 @@ class ProductAdmin extends React.Component {
     fetch('/user/productadmin/currentData', {
         credentials: 'include',
     }).then( response => {
-        // console.log(response)
         return response.json()
         // window.location.href = '/index';
         // this.props.history.push(`/index`);
     }).then(json => {
         var data = json.data;
-        // console.log('this is handle fetch data: ', data)
         this.setState({
           orderData: data.orderData,
           storeData: data.storeData,

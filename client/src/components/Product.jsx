@@ -14,7 +14,6 @@ class AdvancedSearchForm extends React.Component {
     workers: [],
   }
   componentWillMount() {
-    console.log('this is c w')
     const workers = [];
     fetch('/user/productadmin/workerData', {
         credentials: 'include',
@@ -32,7 +31,6 @@ class AdvancedSearchForm extends React.Component {
         this.setState({
           workers: workers,
         })
-        // return workers;
     });
   }
   handleProduct = (e) => {
@@ -60,9 +58,6 @@ class AdvancedSearchForm extends React.Component {
             })
             message.success(result.message);
           }, 2000);
-          
-          // console.log('json.result: ');
-          // console.log(result);
           this.handleReset();
         })
         console.log('Received values of form: ', values);

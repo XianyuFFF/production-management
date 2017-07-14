@@ -27,7 +27,7 @@ router.get('/insert', function(req, res) {
 })
 // 登录过滤
 router.get('/user/*', function(req, res, next) {
-  console.log(req.session.user);
+  console.log('this is get login filter: ', req.session.user);
   if (!req.session.user) {
     next();
     // res.redirect('/index');
@@ -57,12 +57,10 @@ router.post('/login', function(req, res) {
   console.log(data);
   var selectSQL = `select * from ${data.role} where id=?`;
   var selectParam = [];
-  // selectParam.push(data.role);
   selectParam.push(data.id);
   
   connection.query(selectSQL, selectParam, function (error, results, fields) {
     if (error) throw error;
-    console.log(results);
     if (results[0]) {
       if (results[0].password == data.password) {
         if (results[0].name) {
@@ -196,9 +194,7 @@ router.get('/user/productadmin/currentData', function(req, res) {
       },];
       connection.query('SELECT id, name FROM worker', function(werror, wresults, wfields) {
         if (werror) throw werror;
-        console.log(wresults);
         data.workerData = wresults;
-        // res.send({data: results})
         res.send({data});
       })
     })
@@ -255,18 +251,23 @@ router.post('/user/productadmin/adduser', function(req, res) {
   var insertSQL = `INSERT INTO ${data.role} (password) VALUES (123456)`;
   connection.query(insertSQL, function(error, results, fields) {
     if(error) throw error;
-    console.log(results);
     res.send({result:{
       role: data.role,
       id: results.insertId,
     }})
   })
 })
-
-// 定义 sale 页面的路由
-router.get('/sale/:id', function(req, res) {
+// SalesMan 接口
+router.get('/user/salesman/index/:id', function(req, res) {
   res.render('index');
 });
+router.get('/user/warehouseman/index/:id', function(req, res) {
+  res.render('index');
+});
+router.get('/user/worker/index/:id', function(req, res) {
+  res.render('index');
+});
+
 router.use('/static', express.static('/public'));
 
 module.exports = router;

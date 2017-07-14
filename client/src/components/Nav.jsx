@@ -16,13 +16,11 @@ class Nav extends React.Component {
       isLogin: this.props.isLogin,
   }
   confirm(e) {
-    console.log(e);
     message.success('Click on Yes');
     fetch('/user/logout', {
         credentials: 'include',
     }).then( response => {
         console.log(response)
-        //   return response.json()
         window.location.href = '/index';
     });
     // this.props.history.push(`/index`);
@@ -52,7 +50,7 @@ class Nav extends React.Component {
                     <Link to="/index"><Icon type="mail" />Guide</Link>
                 </Menu.Item>
                 <Menu.Item key="3">
-                    <Popconfirm title="Are you sure delete this task?" onConfirm={this.confirm} onCancel={this.cancel} okText="Yes" cancelText="No">
+                    <Popconfirm title="Are you sure logout?" onConfirm={this.confirm} onCancel={this.cancel} okText="Yes" cancelText="No">
                         <a href="/user/logout">logout</a>
                     </Popconfirm>
                 </Menu.Item>
