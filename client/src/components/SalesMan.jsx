@@ -4,19 +4,44 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 import List from './List'
+import New from './NewOrder'
 
 class SalesMan extends React.Component {
     constructor() {
         super();
         this.state = {
-        subkey: 'List',
-        itemkey: null,
+            subkey: 'List',
+            itemkey: null,
+            content: null,
+            listData: [],
         }
     }
+    componentDidMount() {
+        this.getOrderListData();
+        this.setState({
+            content: <List listData={this.state.listData}/>
+        })
+    }
     handleSelect(e) {
+        this.getOrderListData();
+        const content = (e.key === 'List') ? <List listData={this.state.listData}/>:<New />
         this.setState({
             subkey: e.key,
+            content,
         })
+    }
+    getOrderListData() {
+        console.log('this is getOrderListData')
+        fetch('/user/salesman/getOrderListData', {
+            credentials: 'include',
+        }).then( response => {
+            return response.json()
+        }).then(json => {
+            var data = json.data;
+            this.setState({
+                listData: data,
+            })
+        });
     }
     render() {
         return (
@@ -40,7 +65,8 @@ class SalesMan extends React.Component {
                     </Menu>
                     </Sider>
                     <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                        <List />
+                         {this.state.subkey === 'List' ? <List listData={this.state.listData}/>:<New />} 
+                        {/* <New /> */}
                     </Content>
                 </Layout>
             </div>

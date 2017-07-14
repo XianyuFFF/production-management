@@ -63,3 +63,10 @@ td.column-notEnough:hover {
   max-height: 100px;
   overflow-y: auto;
 } */
+/* sale sum */
+.salesman-list .product-sum {
+  margin-right: 20px;
+  margin-left: 20px;
+  line-height: 48px;
+  font-size: 14px;
+}

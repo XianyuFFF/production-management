@@ -261,6 +261,78 @@ router.post('/user/productadmin/adduser', function(req, res) {
 router.get('/user/salesman/index/:id', function(req, res) {
   res.render('index');
 });
+router.get('/user/salesman/getOrderListData', function(req, res) {
+  var data = {};
+  var storeSQL = 'SELECT * FROM store order by id desc limit 1';
+  connection.query(storeSQL, function (error, results, fields) {
+    if (error) throw error;
+    var result = results[0];
+    data.storeData = {
+        product_a: result.product_a,
+        product_b: result.product_b,
+        product_c: result.product_c,
+        product_d: result.product_d,
+      };
+    var orderSQL = 'SELECT id, salesman_id, order_date, product_a, product_b, product_c, product_d, whether_complete, finish_date FROM orders';
+    connection.query(orderSQL, function (oerror, oresults, ofields) {
+      if (oerror) throw oerror;
+      data.orderData = oresults;
+      res.send({data});
+    })
+  })
+})
+router.post('/user/salesman/neworder', function(req, res) {
+  var data = req.body;
+  console.log('this is new order ', data);
+  var insertSQL = 'INSERT INTO orders (customer, salesman_id, product_a, product_b, product_c, product_d) VALUES (?,?,?,?,?,?)'
+  var insertParam = [ data.customer,
+                      200000,
+                      parseInt(data.product_a),
+                      parseInt(data.product_b),
+                      parseInt(data.product_c),
+                      parseInt(data.product_d),
+                    ];
+  connection.query(insertSQL, insertParam, function(error, results, fields) {
+    if (error) throw error;
+    console.log(results)
+    res.send({result: {
+      message: `New order ${results.insertId} success!`
+    }})
+  })
+})
+router.post('/user/salesman/delivery', function(req, res) {
+  var data = req.body;
+  console.log('this is delivery data', data);
+  var selectSQL = 'SELECT * FROM store order by id desc limit 1'
+  connection.query(selectSQL, function(error, results, fields) {
+    if (error) throw error;
+    var result = results[0];
+    var insertSQL = 'INSERT INTO store (sign, change_a, change_b, change_c, change_d, product_a, product_b, product_c, product_d) VALUES (?,?,?,?,?,?,?,?,?)'
+    var insertParam = [ 0,
+                        parseInt(data.product_a),
+                        parseInt(data.product_b),
+                        parseInt(data.product_c),
+                        parseInt(data.product_d),
+                        result.product_a-parseInt(data.product_a),
+                        result.product_b-parseInt(data.product_b),
+                        result.product_c-parseInt(data.product_c),
+                        result.product_d-parseInt(data.product_d),
+                      ];
+    connection.query(insertSQL, insertParam, function(ierror, iresults, ifields) {
+      if (ierror) throw ierror;
+      var finish_date = parseInt(Date.now() / 1000);
+      var ids = data.selectedRowKeys.join(',');
+      var updateSQL = `update orders set whether_complete=1, finish_date=${finish_date} where id in (${ids})`;
+      console.log(updateSQL);
+      connection.query(updateSQL, function(uerror, uresults, ufields) {
+        res.send({result: {
+          message: `Delivery successfully!`,
+        }})
+        console.log(uresults);
+      })
+    })
+  })
+})
 router.get('/user/warehouseman/index/:id', function(req, res) {
   res.render('index');
 });
