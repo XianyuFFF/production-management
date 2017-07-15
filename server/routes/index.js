@@ -228,7 +228,7 @@ router.post('/user/productadmin/product', function(req,res) {
   console.log(data);
 })
 router.get('/user/productadmin/workerData', function(req,res) {
-  var selectSQL = 'SELECT id, name FROM worker';
+  var selectSQL = 'SELECT id, name FROM worker where name is not null';
   connection.query(selectSQL, function(error, results, fields) {
     if (error) throw error;
     console.log(results);
@@ -335,6 +335,46 @@ router.post('/user/salesman/delivery', function(req, res) {
 })
 router.get('/user/warehouseman/index/:id', function(req, res) {
   res.render('index');
+});
+router.get('/user/warehouseman', function(req, res) {
+  res.render('index');
+});
+router.get('/user/warehouseman/add', function(req, res) {
+  res.render('index');
+});
+
+router.get('/user/warehouseman/getStoreData', function(req, res) {
+  var selectSQL = 'select * from store where id > 10000000';
+  connection.query(selectSQL, function(error, results, fields) {
+    if (error) throw error;
+    res.send({data: results});
+  })
+})
+router.post('/user/warehouseman/add', function(req, res) {
+  var data = req.body;
+  var selectSQL = 'SELECT * FROM store order by id desc limit 1'
+  connection.query(selectSQL, function(error, results, fields) {
+    if (error) throw error;
+    var result = results[0];
+    var insertSQL = 'INSERT INTO store ( sign, change_a, change_b, change_c, change_d, product_a, product_b, product_c, product_d) VALUES (?,?,?,?,?,?,?,?,?)'
+    var insertParam = [ 2,
+                        parseInt(data.product_a),
+                        parseInt(data.product_b),
+                        parseInt(data.product_c),
+                        parseInt(data.product_d),
+                        parseInt(data.product_a)+result.product_a,
+                        parseInt(data.product_b)+result.product_b,
+                        parseInt(data.product_c)+result.product_c,
+                        parseInt(data.product_d)+result.product_d,
+                      ];
+    connection.query(insertSQL, insertParam, function(ierror, iresults, ifields) {
+      if (ierror) throw ierror;
+      res.send({result: {
+        message: `${data.product_a} of A,${data.product_b} of B,${data.product_c} of C,${data.product_d} of D has added!`
+      }});
+    })
+  })
+  console.log(data);
 });
 router.get('/user/worker/index/:id', function(req, res) {
   res.render('index');

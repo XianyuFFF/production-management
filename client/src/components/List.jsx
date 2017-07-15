@@ -80,7 +80,7 @@ function initStoreData(storeData) {
     if(storeData) {
         return (
             <div>
-            <span className='product-sum'>Current Sum</span>
+            <span className='product-sum'>Current Store</span>
             <span className='product-sum'>A : {storeData.product_a}</span>
             <span className='product-sum'>B : {storeData.product_b}</span>
             <span className='product-sum'>C : {storeData.product_c}</span>
@@ -160,7 +160,18 @@ class List extends React.Component {
           return response.json()
         }).then( json => {
           let result = json.result;
-          message.success(result.message)
+          this.setState({
+              loading: true,
+          })
+          var self = this;
+          setTimeout(function(){
+            self.props.getOrderListData();
+            self.setState({
+                loading: false,
+            })
+            // window.location.href = window.location.href+'#';
+          }, 1000)
+          message.success(result.message+', delivery ing')
         //   this.props.history.push(`/user/${result.role.toLowerCase()}/index/${result.id}`);
           // window.location.href = '/user/productadmin/index/100000'
         })
@@ -184,7 +195,8 @@ class List extends React.Component {
             columns={columns} 
             dataSource={initListData.call(this,this.props.listData.orderData)} 
             pagination={false}
-            size='small'/>
+            size='small'
+            style={{maxHeight: 320, overflowY: 'auto'}}/>
             <span className='product-sum'>Current Sum</span>
             <span className='product-sum'>A : {this.state.product_a}</span>
             <span className='product-sum'>B : {this.state.product_b}</span>

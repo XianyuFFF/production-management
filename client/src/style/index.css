@@ -70,3 +70,7 @@ td.column-notEnough:hover {
   line-height: 48px;
   font-size: 14px;
 }
+/* .ant-layout-content {
+  max-height: 480px;
+  overflow-y: auto;
+} */

@@ -65,7 +65,7 @@ class SalesMan extends React.Component {
                     </Menu>
                     </Sider>
                     <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                         {this.state.subkey === 'List' ? <List listData={this.state.listData}/>:<New />} 
+                         {this.state.subkey === 'List' ? <List listData={this.state.listData} getOrderListData={this.getOrderListData.bind(this)}/>:<New />} 
                         {/* <New /> */}
                     </Content>
                 </Layout>

@@ -105,7 +105,8 @@ class Personnel extends React.Component {
       <div className="personnel">
         <h1>{this.props.role}</h1>
         <Table columns={columns} dataSource={this.state.data}
-        pagination={false} />
+        pagination={false} 
+        style={{maxHeight: 320, overflowY: 'auto'}}/>
         <Button type="primary"
           style={{
             float:'right',marginTop: 10
