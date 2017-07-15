@@ -9,35 +9,25 @@ var connection = mysql.createConnection({
   database: 'nodejs'
 })
 connection.connect();
-// test connect route
 
-router.get('/connect', function(req, res) {
-  var selectSQL = 'select * from ProductAdmin where id=?';
-  var selectParam = [100000];
-  connection.query(selectSQL, selectParam, function (error, results, fields) {
-    if (error) throw error;
-    res.send(results);
-  })
-})
-router.get('/insert', function(req, res) {
-  connection.query('update user set name="MrSosann" where id=100000', function (error, results, fields) {
-    if (error) throw error;
-    res.send(results);
-  })
-})
 // 登录过滤
 router.get('/user/*', function(req, res, next) {
   console.log('this is get login filter: ', req.session.user);
   if (!req.session.user) {
-    next();
-    // res.redirect('/index');
+    // next();
+    res.redirect('/index');
   } else if (req.session.user) {
     next();
   }
 });
 router.post('/user/*', function(req, res, next) {
   console.log('this is post login filter')
-  // res.send('index1');
+  if (!req.session.user) {
+    // next();
+    console.log('***warning not login post')
+  } else if (req.session.user) {
+    console.log('***this is post login filter')
+  }
   next();
 });
 // 定义网站主页的路由
@@ -286,7 +276,7 @@ router.post('/user/salesman/neworder', function(req, res) {
   console.log('this is new order ', data);
   var insertSQL = 'INSERT INTO orders (customer, salesman_id, product_a, product_b, product_c, product_d) VALUES (?,?,?,?,?,?)'
   var insertParam = [ data.customer,
-                      200000,
+                      req.session.user.id,
                       parseInt(data.product_a),
                       parseInt(data.product_b),
                       parseInt(data.product_c),

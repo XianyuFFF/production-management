@@ -74,3 +74,28 @@ td.column-notEnough:hover {
   max-height: 480px;
   overflow-y: auto;
 } */
+/* For demo */
+.home-page {
+  width: 68%;
+  margin: 34px auto;
+}
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 440px;
+  /* line-height: 420px; */
+  background: #375FC0;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide img {
+  /* color: #fff; */
+   width: 100%; 
+   height: 398px;
+}
+.ant-carousel .slick-slide h3 {
+  color: #fff; 
+  line-height: 34px;
+}
+.slick-dots li button {
+   background: #FF8C94!important; 
+}

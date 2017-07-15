@@ -24,7 +24,7 @@ class WarehouseMan extends React.Component {
                 <div>
                 <Breadcrumb style={{ margin: '12px 0' ,padding: '0 20px'}}>
                     <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    <Breadcrumb.Item>SalesMan</Breadcrumb.Item>
+                    <Breadcrumb.Item>WarehouseMan</Breadcrumb.Item>
                     <Breadcrumb.Item>{this.state.subkey}</Breadcrumb.Item>
                 </Breadcrumb>
                 <Layout style={{ margin: '0 20px',padding: '24px 0', background: '#fff', minHeight: 440 }}>
