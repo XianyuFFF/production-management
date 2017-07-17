@@ -1,5 +1,7 @@
 @import '~antd/dist/antd.css';
-
+body {
+   background-color: #eee; 
+}
 #components-layout-demo-fixed .logo {
   width: 120px;
   height: 32px;
@@ -14,4 +16,86 @@
 .ant-dropdown-menu-dark .ant-dropdown-menu-item-selected {
   background: inherit;
   color: rgba(255, 255, 255, 0.67);
+}
+.ant-dropdown-menu-dark .ant-dropdown-menu-item-selected:hover {
+  background: inherit;
+  color: #fff;
+}
+.login-form {
+  max-width: 300px;
+  margin: 50px auto 10px;
+}
+.login-form-forgot {
+  float: right;
+}
+.login-form-button {
+  width: 100%;
+}
+.ant-tabs-nav .ant-tabs-tab {
+  height: auto;
+}
+.steps-content {
+  margin-top: 16px;
+  border: 1px dashed #e9e9e9;
+  border-radius: 6px;
+  background-color: #fafafa;
+  min-height: 200px;
+  text-align: center;
+  padding-top: 80px;
+}
+
+.steps-action {
+  margin-top: 24px;
+}
+/* ProductAdmin/Produce/Current product not enough */
+
+td.column-notEnough,
+td.column-notEnough:hover {
+  background-color: #F1684E!important;
+  /* FF8C94 */
+  color: #eee;
+  font-weight: 500;
+}
+.ant-card-body {
+  padding: 0;
+}
+/* .personnel .ant-table-tbody {
+  max-height: 100px;
+  overflow-y: auto;
+} */
+/* sale sum */
+.salesman-list .product-sum {
+  margin-right: 20px;
+  margin-left: 20px;
+  line-height: 48px;
+  font-size: 14px;
+}
+/* .ant-layout-content {
+  max-height: 480px;
+  overflow-y: auto;
+} */
+/* For demo */
+.home-page {
+  width: 68%;
+  margin: 34px auto;
+}
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 440px;
+  /* line-height: 420px; */
+  background: #375FC0;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide img {
+  /* color: #fff; */
+   width: 100%; 
+   height: 398px;
+}
+.ant-carousel .slick-slide h3 {
+  color: #fff; 
+  line-height: 34px;
+}
+.slick-dots li button {
+   background: #FF8C94!important; 
 }
